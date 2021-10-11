@@ -2,7 +2,10 @@
 
 # dependencies
 /node_modules
+<<<<<<< HEAD
 /web/node_modules
+=======
+>>>>>>> 99679e7d74c690de026e0b09010972096b1f4566
 /.pnp
 .pnp.js
 
