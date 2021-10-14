@@ -18,12 +18,20 @@ server.get('/movies', (req, res) => {
   const genderFilterParam = req.query.gender;
   console.log(genderFilterParam);
   console.log(req.query);
+  const filterMovies = movies.filter((movie) => {
+    if (genderFilterParam === undefined || genderFilterParam === '') {
+      return movie;
+    } else {
+      return genderFilterParam === movie.gender
+    }
+  })
   const response = {
     success: true,
-    movies,
+    movies: filterMovies,
   };
+  console.log(filterMovies)
   res.json(response);
 });
 
-const staticServerPathWeb = './public-react'; // En esta carpeta ponemos los ficheros estáticos
+const staticServerPathWeb = './src/public-react'; // En esta carpeta ponemos los ficheros estáticos
 server.use(express.static(staticServerPathWeb));
