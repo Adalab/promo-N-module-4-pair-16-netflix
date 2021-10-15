@@ -22,15 +22,22 @@ server.get('/movies', (req, res) => {
     if (genderFilterParam === undefined || genderFilterParam === '') {
       return movie;
     } else {
-      return genderFilterParam === movie.gender
+      return genderFilterParam === movie.gender;
     }
-  })
+  });
   const response = {
     success: true,
     movies: filterMovies,
   };
-  console.log(filterMovies)
+  console.log(filterMovies);
   res.json(response);
+});
+
+server.get('/movie/:id', (req, res) => {
+  const paramsId = req.params.id;
+  console.log('Params ID', paramsId);
+  const foundMovie = movies.find((movie) => movie.id === req.params.id);
+  console.log(foundMovie);
 });
 
 const staticServerPathWeb = './src/public-react'; // En esta carpeta ponemos los ficheros estáticos
