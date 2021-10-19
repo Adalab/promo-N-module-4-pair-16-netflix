@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const dataBase = require('better-sqlite3');
+
 
 // create and config server
 const server = express();
@@ -14,10 +16,16 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
+//configurar base de datos
+const db = new dataBase('./src/database.db', { verbose: console.log });
+
 server.get('/movies', (req, res) => {
   const genderFilterParam = req.query.gender;
-  console.log(genderFilterParam);
-  console.log(req.query);
+  //declarar la query
+  const query = db.prepare('SELECT * FROM movies')
+  //ejecutar la query
+  const findMovies = query.get(name, gender, image)
+
   const filterMovies = movies.filter((movie) => {
     if (genderFilterParam === undefined || genderFilterParam === '') {
       return movie;
