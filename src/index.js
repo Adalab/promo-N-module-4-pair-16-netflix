@@ -20,13 +20,13 @@ server.listen(serverPort, () => {
 const db = new dataBase('./src/database.db', { verbose: console.log });
 
 server.get('/movies', (req, res) => {
-  const genderFilterParam = req.query.gender;
   //declarar la query
-  const query = db.prepare('SELECT * FROM movies')
+  const query = db.prepare('SELECT * FROM movies ORDER by name DESC')
   //ejecutar la query
-  const findMovies = query.get(name, gender, image)
+  const moviesDatabase = query.all();
 
-  const filterMovies = movies.filter((movie) => {
+  const genderFilterParam = req.query.gender;
+  const filterMovies = moviesDatabase.filter((movie) => {
     if (genderFilterParam === undefined || genderFilterParam === '') {
       return movie;
     } else {
@@ -47,6 +47,22 @@ server.get('/movie/:id', (req, res) => {
   const foundMovie = movies.find((movie) => movie.id === req.params.id);
   console.log(foundMovie);
 });
+
+//endpoint de SignUp=acceso
+server.post('/singnUp', (req, res) => {
+  const paramsEmail = req.params.email;
+  const paramPass = req.params.pass;
+  //verificar que los datos se introduzcan correctamente
+  if (email === '' || email === undefined || pass === '' || pass === undefined) {
+    res.json({ error: true, message: 'Introduzca correctamente los datos' })
+  }
+  const querySignUp = db.prepare('SELECT * FROM users WHERE email=?');
+  const userFound = querySignUp.get(email, pass);
+  //comprobar si el usuario existe, si no, lo insertamos en la db
+  if (userFound === undefined) {
+    const query = db.prepare('INSERT INTO users (email, pass) values(?,?)')
+  }
+})
 
 const staticServerPathWeb = './src/public-react'; // En esta carpeta ponemos los ficheros estáticos
 server.use(express.static(staticServerPathWeb));
