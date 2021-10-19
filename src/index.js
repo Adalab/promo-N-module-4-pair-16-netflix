@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const dataBase = require('better-sqlite3');
 
-
 // create and config server
 const server = express();
 server.use(cors());
@@ -21,7 +20,7 @@ const db = new dataBase('./src/database.db', { verbose: console.log });
 
 server.get('/movies', (req, res) => {
   //declarar la query
-  const query = db.prepare('SELECT * FROM movies ORDER by name DESC')
+  const query = db.prepare('SELECT * FROM movies ORDER by name DESC');
   //ejecutar la query
   const moviesDatabase = query.all();
 
@@ -49,20 +48,36 @@ server.get('/movie/:id', (req, res) => {
 });
 
 //endpoint de SignUp=acceso
-server.post('/singnUp', (req, res) => {
-  const paramsEmail = req.params.email;
-  const paramPass = req.params.pass;
+server.post('/user/signUp', (req, res) => {
+  const paramsEmail = req.body.email;
+  const paramPass = req.body.pass;
   //verificar que los datos se introduzcan correctamente
-  if (email === '' || email === undefined || pass === '' || pass === undefined) {
-    res.json({ error: true, message: 'Introduzca correctamente los datos' })
+  if (
+    email === '' ||
+    email === undefined ||
+    pass === '' ||
+    pass === undefined
+  ) {
+    res.json({ error: true, message: 'Introduzca correctamente los datos' });
   }
   const querySignUp = db.prepare('SELECT * FROM users WHERE email=?');
   const userFound = querySignUp.get(email, pass);
   //comprobar si el usuario existe, si no, lo insertamos en la db
   if (userFound === undefined) {
-    const query = db.prepare('INSERT INTO users (email, pass) values(?,?)')
+    const query = db.prepare('INSERT INTO users (email, pass) values(?,?)');
+
+    const userInsert = query.run(email, pass);
+    res.json({
+      error: false,
+      userId: userInsert.lastInsertRowid,
+    });
+  } else {
+    res.json({
+      error: true,
+      message: 'Usuaro ya existe',
+    });
   }
-})
+});
 
 const staticServerPathWeb = './src/public-react'; // En esta carpeta ponemos los ficheros estáticos
 server.use(express.static(staticServerPathWeb));
