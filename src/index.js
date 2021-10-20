@@ -50,23 +50,25 @@ server.get('/movie/:id', (req, res) => {
 //endpoint de SignUp=acceso
 server.post('/user/signUp', (req, res) => {
   const email = req.body.email;
-  const pass = req.body.pass;
+  const password = req.body.password;
   //verificar que los datos se introduzcan correctamente
   if (
     email === '' ||
     email === undefined ||
-    pass === '' ||
-    pass === undefined
+    password === '' ||
+    password === undefined
   ) {
     res.json({ error: true, message: 'Introduzca correctamente los datos' });
   }
-  const querySignUp = db.prepare('SELECT * FROM users WHERE email=?');
-  const userFound = querySignUp.get(email);
+  const querySignUp = db.prepare(
+    'SELECT * FROM users WHERE email=? and password=?'
+  );
+  const userFound = querySignUp.get(email, password);
   //comprobar si el usuario existe, si no, lo insertamos en la db
   if (userFound === undefined) {
-    const query = db.prepare('INSERT INTO users (email, pass) values(?,?)');
+    const query = db.prepare('INSERT INTO users (email, password) values(?,?)');
 
-    const userInsert = query.run(email, pass);
+    const userInsert = query.run(email, password);
     res.json({
       error: false,
       userId: userInsert.lastInsertRowid,
