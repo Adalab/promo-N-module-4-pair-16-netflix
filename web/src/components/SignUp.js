@@ -29,46 +29,46 @@ const SignUp = (props) => {
     // Si el API ha devuelto un error, APP lo guarda en el estado y nos lo pasa
     if (props.signUpErrorMessage !== '') {
       return (
-        <p className='border--medium border--warning mt-1'>
+        <p className="border--medium border--warning mt-1">
           Error en el registro:{' '}
-          <span className='text--bold'>{props.signUpErrorMessage}</span>
+          <span className="text--bold">{props.signUpErrorMessage}</span>
         </p>
       );
     }
   };
 
   return (
-    <section className='border--medium'>
+    <section className="border--medium">
       <h1>Regístrate</h1>
       <form onSubmit={handleForm}>
-        <label className='form__label display-block' htmlFor='email'>
+        <label className="form__label display-block" htmlFor="email">
           Escribe tu email
         </label>
         <input
-          className='form__input-text'
-          type='text'
-          name='email'
-          id='email'
+          className="form__input-text"
+          type="text"
+          name="email"
+          id="email"
           value={email}
           onChange={handleEmail}
         />
 
-        <label className='form__label display-block' htmlFor='password'>
+        <label className="form__label display-block" htmlFor="password">
           Escribe tu contraseña
         </label>
         <input
-          className='form__input-text'
-          type='text'
-          name='password'
-          id='password'
+          className="form__input-text"
+          type="text"
+          name="password"
+          id="password"
           value={password}
           onChange={handlePassword}
         />
 
         <input
-          className='form__btn display-block'
-          type='submit'
-          value='Registrar'
+          className="form__btn display-block"
+          type="submit"
+          value="Registrar"
         />
 
         {/* {renderErrorMessage()} */}

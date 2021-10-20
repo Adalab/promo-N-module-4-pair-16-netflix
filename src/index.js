@@ -81,6 +81,26 @@ server.post('/user/signUp', (req, res) => {
   }
 });
 
+//End point Profile
+
+server.post('/users/profile', (req, res) => {
+  const userId = req.headers.userId;
+  console.log(userId);
+  const query = db.prepare(
+    'UPDATE users SET email = ?, password = ? WHERE id = ?'
+  );
+  const contactUpdate = query.run(
+    req.body.email,
+    req.body.password,
+    req.body.id
+  );
+
+  res.json({
+    success: true,
+    message: 'Usuario actualizado',
+  });
+});
+
 const staticServerPathWeb = './src/public-react'; // En esta carpeta ponemos los ficheros estáticos
 server.use(express.static(staticServerPathWeb));
 
